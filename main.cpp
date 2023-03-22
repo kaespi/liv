@@ -7,7 +7,12 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
   QQmlApplicationEngine engine;
 
-  engine.addImageProvider("imgprovider", new ImgProvider);
+  QString imgFile{};
+  if (argc >= 2) {
+    imgFile = argv[1];
+  }
+
+  engine.addImageProvider("imgprovider", new ImgProvider(imgFile));
 
   const QUrl url(u"qrc:/lightweightimageviewer/main.qml"_qs);
   QObject::connect(

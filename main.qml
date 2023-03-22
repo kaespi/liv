@@ -6,15 +6,17 @@ Window {
     height: 480
     visible: true
     title: qsTr("liv")
-    ColumnLayout {
+
+    Rectangle {
         anchors.fill: parent
+        color: "black"
 
         Image {
             id: img1
+            anchors.fill: parent
 
             source: "image://imgprovider/1"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+            fillMode: Image.PreserveAspectFit
 
             MouseArea {
                 anchors.fill: parent
@@ -23,23 +25,6 @@ Window {
                 }
                 onReleased: {
                     parent.source = "image://imgprovider/1"
-                }
-            }
-        }
-        Image {
-            id: img2
-
-            source: "image://imgprovider/2"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "image://imgprovider/yellow"
-                }
-                onReleased: {
-                    parent.source = "image://imgprovider/2"
                 }
             }
         }

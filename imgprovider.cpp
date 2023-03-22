@@ -1,8 +1,14 @@
 #include "imgprovider.h"
 
 #include <QDir>
+#include <QFile>
 
-ImgProvider::ImgProvider() : QQuickImageProvider(QQuickImageProvider::Pixmap) {}
+ImgProvider::ImgProvider(const QString &file)
+    : QQuickImageProvider(QQuickImageProvider::Pixmap) {
+  if (not file.isEmpty() && QFile::exists(file)) {
+    m_file = file;
+  }
+}
 
 QPixmap ImgProvider::requestPixmap(const QString &id, QSize *size,
                                    const QSize &requestedSize) {
@@ -14,9 +20,11 @@ QPixmap ImgProvider::requestPixmap(const QString &id, QSize *size,
 
   QPixmap pixmap;
   if (id == "1") {
-    pixmap.load("../lightweightimageviewer/data/testimages/bbv1.png");
-  } else if (id == "2") {
-    pixmap.load("../lightweightimageviewer/data/testimages/bbv2.jpg");
+    if (not m_file.isEmpty()) {
+      pixmap.load(m_file);
+    } else {
+      pixmap.load("../lightweightimageviewer/data/testimages/bbv1.png");
+    }
   } else {
     pixmap =
         QPixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
