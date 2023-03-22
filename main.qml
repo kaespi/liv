@@ -18,6 +18,10 @@ Window {
             source: "image://imgprovider/1"
             fillMode: Image.PreserveAspectFit
 
+            onSourceChanged: {
+                console.log("new image ready")
+            }
+
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
