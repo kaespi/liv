@@ -9,17 +9,25 @@ QString composeFullPath(const QDir &dir, const QString &filename) {
   return QDir::cleanPath(dir.absolutePath() + QDir::separator() + filename);
 }
 
-void collectFilesInDir(const QDir &dir, QStringList &files) {
-  files = dir.entryList(QStringList() << "*.jpg"
-                                      << "*.JPG"
-                                      << "*.png"
-                                      << "*.PNG",
-                        QDir::Files);
+void collectFilesInDir(const QDir &dir, QStringList &pattern,
+                       QStringList &files) {
+  files = dir.entryList(pattern, QDir::Files);
   files.sort(Qt::CaseSensitivity::CaseInsensitive);
+}
+
+void updatePattern(const QList<QByteArray> &extensions, QStringList &pattern) {
+  pattern.clear();
+  for (auto &extension : extensions) {
+    pattern.append(QString("*.") + extension.toLower());
+    pattern.append(QString("*.") + extension.toUpper());
+  }
 }
 } // namespace
 
-FileSystemWalker::FileSystemWalker(const QString &file) {
+FileSystemWalker::FileSystemWalker(const QString &file,
+                                   QList<QByteArray> &fileTypes) {
+  updatePattern(fileTypes, m_filePattern);
+
   if (file.isEmpty()) {
     qWarning("No filename provided");
     m_dir = QDir(QDir::currentPath());
@@ -30,11 +38,11 @@ FileSystemWalker::FileSystemWalker(const QString &file) {
         auto filename = fileInfo.fileName();
         auto dir = fileInfo.dir();
         m_dir = dir;
-        collectFilesInDir(m_dir, m_filesInDir);
+        collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
         m_currentFileIndex = m_filesInDir.indexOf(filename);
       } else {
         m_dir = QDir(file);
-        collectFilesInDir(m_dir, m_filesInDir);
+        collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
       }
     } else {
       m_dir = QDir(QDir::currentPath());

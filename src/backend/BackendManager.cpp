@@ -1,8 +1,12 @@
 #include "BackendManager.h"
 
-BackendManager::BackendManager(const QString &file)
-    : m_fileSystemWalker(FileSystemWalker(file)) {
-  m_ptrImgProvider = new ImgProvider(m_fileSystemWalker);
+#include <QImageReader>
+
+BackendManager::BackendManager(const QString &file) {
+  auto supportedFormats = QImageReader::supportedImageFormats();
+  m_ptrFileSystemWalker =
+      std::make_unique<FileSystemWalker>(file, supportedFormats);
+  m_ptrImgProvider = new ImgProvider(m_ptrFileSystemWalker.get());
 }
 
 BackendManager::~BackendManager() {

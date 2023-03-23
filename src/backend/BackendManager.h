@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "FileSystemWalker.h"
 #include "ImgProvider.h"
 
@@ -13,5 +15,5 @@ public:
 private:
   bool m_imgProviderRequested{false};
   ImgProvider *m_ptrImgProvider{nullptr};
-  FileSystemWalker m_fileSystemWalker;
+  std::unique_ptr<FileSystemWalker> m_ptrFileSystemWalker;
 };
