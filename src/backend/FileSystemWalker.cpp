@@ -11,8 +11,7 @@ QString composeFullPath(const QDir &dir, const QString &filename) {
 
 void collectFilesInDir(const QDir &dir, QStringList &pattern,
                        QStringList &files) {
-  files = dir.entryList(pattern, QDir::Files);
-  files.sort(Qt::CaseSensitivity::CaseInsensitive);
+  files = dir.entryList(pattern, QDir::Files, QDir::Name | QDir::IgnoreCase);
 }
 
 void updatePattern(const QList<QByteArray> &extensions, QStringList &pattern) {
