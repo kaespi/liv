@@ -1,7 +1,8 @@
 #include "BackendManager.h"
 
-BackendManager::BackendManager(const QString &file) {
-  m_ptrImgProvider = new ImgProvider(file);
+BackendManager::BackendManager(const QString &file)
+    : m_fileSystemWalker(FileSystemWalker(file)) {
+  m_ptrImgProvider = new ImgProvider(m_fileSystemWalker);
 }
 
 BackendManager::~BackendManager() {

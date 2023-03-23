@@ -10,6 +10,8 @@ int main(int argc, char *argv[]) {
   QString imgFile{};
   if (argc >= 2) {
     imgFile = argv[1];
+  } else {
+    imgFile = "../../lightweightimageviewer/data/testimages/bbv1.png";
   }
 
   BackendManager backendMgr(imgFile);

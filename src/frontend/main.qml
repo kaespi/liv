@@ -14,12 +14,20 @@ Window {
         Image {
             id: img1
             anchors.fill: parent
+            focus: true
+            cache: false
+            property int imgCnt: 1
 
-            source: "image://imgprovider/1"
+            source: "image://imgprovider/" + imgCnt
             fillMode: Image.PreserveAspectFit
 
             onSourceChanged: {
                 console.log("new image ready")
+            }
+
+            function updateImage(direction) {
+                imgCnt++
+                source = "image://imgprovider/" + imgCnt + "_" + direction
             }
 
             MouseArea {
@@ -31,6 +39,9 @@ Window {
                     parent.source = "image://imgprovider/1"
                 }
             }
+
+            Keys.onLeftPressed: updateImage("prev")
+            Keys.onRightPressed: updateImage("next")
         }
     }
 }

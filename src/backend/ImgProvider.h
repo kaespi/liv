@@ -1,15 +1,17 @@
 #pragma once
 
+#include "FileSystemWalker.h"
+
 #include <QQuickImageProvider>
 
 class ImgProvider : public QQuickImageProvider {
 public:
-  ImgProvider(const QString &file);
+  ImgProvider(FileSystemWalker &fileSystemWalker);
   ~ImgProvider() = default;
 
   QPixmap requestPixmap(const QString &id, QSize *size,
                         const QSize &requestedSize) override;
 
 private:
-  QString m_file{};
+  FileSystemWalker &m_fileSystemWalker;
 };

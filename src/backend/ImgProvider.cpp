@@ -1,31 +1,31 @@
 #include "ImgProvider.h"
 
-#include <QDir>
-#include <QFile>
-
-ImgProvider::ImgProvider(const QString &file)
-    : QQuickImageProvider(QQuickImageProvider::Pixmap) {
-  if (not file.isEmpty() && QFile::exists(file)) {
-    m_file = file;
-  }
-}
+ImgProvider::ImgProvider(FileSystemWalker &fileSystemWalker)
+    : QQuickImageProvider(QQuickImageProvider::Pixmap),
+      m_fileSystemWalker(fileSystemWalker) {}
 
 QPixmap ImgProvider::requestPixmap(const QString &id, QSize *size,
                                    const QSize &requestedSize) {
   qDebug() << "requestPixmap(" << id << ")";
-  qDebug() << QDir::currentPath();
-
-  int width = 100;
-  int height = 50;
 
   QPixmap pixmap;
-  if (id == "1") {
-    if (not m_file.isEmpty()) {
-      pixmap.load(m_file);
+  if (id.contains('_')) {
+    auto ixUnderscore = id.lastIndexOf('_');
+    auto command = id.last(id.size() - ixUnderscore - 1);
+    if (command == "next") {
+      pixmap.load(m_fileSystemWalker.getNextFile());
+    } else if (command == "prev") {
+      pixmap.load(m_fileSystemWalker.getPrevFile());
     } else {
-      pixmap.load("../../lightweightimageviewer/data/testimages/bbv1.png");
+      qWarning("Unknown command %s", command.toLatin1().data());
+      pixmap.load(m_fileSystemWalker.getCurrentFile());
     }
+  } else if (id == "1") {
+    pixmap.load(m_fileSystemWalker.getCurrentFile());
   } else {
+    int width = 100;
+    int height = 50;
+
     pixmap =
         QPixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
                 requestedSize.height() > 0 ? requestedSize.height() : height);

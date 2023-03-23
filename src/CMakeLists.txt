@@ -8,6 +8,8 @@ qt_add_executable(liv
     backend/ImgProvider.h
     backend/BackendManager.cpp
     backend/BackendManager.h
+    backend/FileSystemWalker.cpp
+    backend/FileSystemWalker.h
 )
 
 qt_add_qml_module(liv

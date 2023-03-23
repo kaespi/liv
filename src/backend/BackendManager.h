@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FileSystemWalker.h"
 #include "ImgProvider.h"
 
 class BackendManager {
@@ -12,4 +13,5 @@ public:
 private:
   bool m_imgProviderRequested{false};
   ImgProvider *m_ptrImgProvider{nullptr};
+  FileSystemWalker m_fileSystemWalker;
 };
