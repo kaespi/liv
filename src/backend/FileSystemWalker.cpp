@@ -55,17 +55,50 @@ QString FileSystemWalker::getCurrentFile() const {
 }
 
 QString FileSystemWalker::getNextFile() {
-  ++m_currentFileIndex;
-  if (m_currentFileIndex >= m_filesInDir.size()) {
-    m_currentFileIndex = 0;
-  }
+  updateFileIndexToExisting(+1);
   return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
 }
 
 QString FileSystemWalker::getPrevFile() {
-  --m_currentFileIndex;
-  if (m_currentFileIndex < 0) {
-    m_currentFileIndex = m_filesInDir.size() - 1;
-  }
+  updateFileIndexToExisting(-1);
   return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+}
+
+void FileSystemWalker::updateFileIndexToExisting(ssize_t increment) {
+  if (m_filesInDir.size() <= 1) {
+    m_currentFileIndex = 0;
+    return;
+  }
+
+  auto fileIndex = m_currentFileIndex;
+  bool foundNonExistingFile = false;
+  do {
+    fileIndex += increment;
+
+    if (fileIndex >= m_filesInDir.size()) {
+      fileIndex = 0;
+    } else if (fileIndex < 0) {
+      fileIndex = m_filesInDir.size() - 1;
+    }
+
+    if (QFile::exists(composeFullPath(m_dir, m_filesInDir[fileIndex]))) {
+      m_currentFileIndex = fileIndex;
+      break;
+    }
+
+    foundNonExistingFile = true;
+  } while (fileIndex != m_currentFileIndex);
+
+  if (foundNonExistingFile) {
+    rescanFiles();
+  }
+}
+
+void FileSystemWalker::rescanFiles() {
+  auto currentFile = m_filesInDir[m_currentFileIndex];
+  collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
+  m_currentFileIndex = m_filesInDir.indexOf(currentFile);
+  if (m_currentFileIndex < 0) {
+    m_currentFileIndex = 0;
+  }
 }
