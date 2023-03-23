@@ -4,8 +4,8 @@ project(lightweightimageviewer VERSION 0.1 LANGUAGES CXX)
 
 qt_add_executable(liv
     main.cpp
-    backend/imgprovider.cpp
-    backend/imgprovider.h
+    backend/ImgProvider.cpp
+    backend/ImgProvider.h
 )
 
 qt_add_qml_module(liv

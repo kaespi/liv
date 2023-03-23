@@ -1,4 +1,4 @@
-#include "imgprovider.h"
+#include "ImgProvider.h"
 
 #include <QDir>
 #include <QFile>

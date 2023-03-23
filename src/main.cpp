@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "backend/imgprovider.h"
+#include "backend/ImgProvider.h"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
