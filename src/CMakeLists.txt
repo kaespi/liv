@@ -6,6 +6,8 @@ qt_add_executable(liv
     main.cpp
     backend/ImgProvider.cpp
     backend/ImgProvider.h
+    backend/BackendManager.cpp
+    backend/BackendManager.h
 )
 
 qt_add_qml_module(liv
