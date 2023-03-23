@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QString>
+#include <QDir>
+#include <QStringList>
 
 class FileSystemWalker {
 public:
@@ -11,5 +12,7 @@ public:
   QString getPrevFile();
 
 private:
-  QString m_file{};
+  QDir m_dir{};
+  QStringList m_filesInDir{};
+  qsizetype m_currentFileIndex{0};
 };
