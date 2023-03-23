@@ -31,6 +31,8 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
 {
     updatePattern(fileTypes, m_filePattern);
 
+    QString filename{};
+
     if (file.isEmpty())
     {
         qWarning("No filename provided");
@@ -43,16 +45,13 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
             QFileInfo fileInfo(file);
             if (fileInfo.isFile())
             {
-                auto filename = fileInfo.fileName();
+                filename = fileInfo.fileName();
                 auto dir = fileInfo.dir();
                 m_dir = dir;
-                collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
-                m_currentFileIndex = m_filesInDir.indexOf(filename);
             }
             else
             {
                 m_dir = QDir(file);
-                collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
             }
         }
         else
@@ -60,6 +59,13 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
             m_dir = QDir(QDir::currentPath());
             qWarning("File %s doesn't exist", file.toLatin1().data());
         }
+    }
+
+    collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
+
+    if (not filename.isEmpty())
+    {
+        m_currentFileIndex = m_filesInDir.indexOf(filename);
     }
 }
 
