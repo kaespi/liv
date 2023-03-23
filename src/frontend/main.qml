@@ -17,16 +17,36 @@ Window {
             focus: true
             cache: false
             property int imgCnt: 1
+            property bool loadingImage: false
 
             source: "image://imgprovider/" + imgCnt
             fillMode: Image.PreserveAspectFit
 
+            Timer {
+                id: imgLoadingTimer
+            }
+
+            function delay(delayTime, cb) {
+                imgLoadingTimer.interval = delayTime
+                imgLoadingTimer.repeat = false
+                imgLoadingTimer.triggered.connect(waitImageLoaded)
+                imgLoadingTimer.start()
+            }
+
             onSourceChanged: {
-                console.log("new image ready")
+                loadingImage = false
+            }
+
+            function waitImageLoaded() {
+                if (loadingImage) {
+                    delay(10, waitImageLoaded)
+                }
             }
 
             function updateImage(direction) {
                 imgCnt++
+                waitImageLoaded()
+                loadingImage = true
                 source = "image://imgprovider/" + imgCnt + "_" + direction
             }
 
