@@ -6,8 +6,6 @@ ImgProvider::ImgProvider(FileSystemWalker* const ptrFileSystemWalker)
 
 QPixmap ImgProvider::requestPixmap(const QString& id, QSize* size, const QSize& requestedSize)
 {
-    qDebug() << "requestPixmap(" << id << ")";
-
     QPixmap pixmap;
     if (id.contains('_'))
     {
@@ -27,18 +25,9 @@ QPixmap ImgProvider::requestPixmap(const QString& id, QSize* size, const QSize& 
             pixmap.load(m_ptrFileSystemWalker->getCurrentFile());
         }
     }
-    else if (id == "1")
-    {
-        pixmap.load(m_ptrFileSystemWalker->getCurrentFile());
-    }
     else
     {
-        int width = 100;
-        int height = 50;
-
-        pixmap = QPixmap(requestedSize.width() > 0 ? requestedSize.width() : width,
-                         requestedSize.height() > 0 ? requestedSize.height() : height);
-        pixmap.fill(QColor(id).rgba());
+        pixmap.load(m_ptrFileSystemWalker->getCurrentFile());
     }
 
     *size = pixmap.size();

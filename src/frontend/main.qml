@@ -50,16 +50,6 @@ Window {
                 source = "image://imgprovider/" + imgCnt + "_" + direction
             }
 
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "image://imgprovider/red"
-                }
-                onReleased: {
-                    parent.source = "image://imgprovider/1"
-                }
-            }
-
             Keys.onLeftPressed: updateImage("prev")
             Keys.onRightPressed: updateImage("next")
         }
