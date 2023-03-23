@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "imgprovider.h"
+#include "backend/imgprovider.h"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
   engine.addImageProvider("imgprovider", new ImgProvider(imgFile));
 
-  const QUrl url(u"qrc:/lightweightimageviewer/main.qml"_qs);
+  const QUrl url(u"qrc:/lightweightimageviewer/frontend/main.qml"_qs);
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreated, &app,
       [url](QObject *obj, const QUrl &objUrl) {

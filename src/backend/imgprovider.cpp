@@ -23,7 +23,7 @@ QPixmap ImgProvider::requestPixmap(const QString &id, QSize *size,
     if (not m_file.isEmpty()) {
       pixmap.load(m_file);
     } else {
-      pixmap.load("../lightweightimageviewer/data/testimages/bbv1.png");
+      pixmap.load("../../lightweightimageviewer/data/testimages/bbv1.png");
     }
   } else {
     pixmap =
