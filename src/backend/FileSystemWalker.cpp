@@ -19,7 +19,7 @@ void collectFilesInDir(const QDir& dir, QStringList& pattern, QStringList& files
 void updatePattern(const QList<QByteArray>& extensions, QStringList& pattern)
 {
     pattern.clear();
-    for (auto& extension : extensions)
+    for (const auto& extension : extensions)
     {
         pattern.append(QString("*.") + extension.toLower());
         pattern.append(QString("*.") + extension.toUpper());

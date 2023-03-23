@@ -4,13 +4,13 @@ ImgProvider::ImgProvider(FileSystemWalker* const ptrFileSystemWalker)
     : QQuickImageProvider(QQuickImageProvider::Pixmap), m_ptrFileSystemWalker(ptrFileSystemWalker)
 {}
 
-QPixmap ImgProvider::requestPixmap(const QString& id, QSize* size, const QSize& requestedSize)
+QPixmap ImgProvider::requestPixmap(const QString& imgName, QSize* size, const QSize& /*requestedSize*/)
 {
     QPixmap pixmap;
-    if (id.contains('_'))
+    if (imgName.contains('_'))
     {
-        auto ixUnderscore = id.lastIndexOf('_');
-        auto command = id.last(id.size() - ixUnderscore - 1);
+        auto ixUnderscore = imgName.lastIndexOf('_');
+        auto command = imgName.last(imgName.size() - ixUnderscore - 1);
         if (command == "next")
         {
             pixmap.load(m_ptrFileSystemWalker->getNextFile());

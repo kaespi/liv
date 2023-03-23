@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     QString imgFile{};
     if (argc >= 2)
     {
-        imgFile = argv[1];
+        imgFile = argv[1]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
     else
     {
@@ -26,8 +26,10 @@ int main(int argc, char* argv[])
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated, &app,
         [url](QObject* obj, const QUrl& objUrl) {
-            if (!obj && url == objUrl)
+            if (obj == nullptr && url == objUrl)
+            {
                 QCoreApplication::exit(-1);
+            }
         },
         Qt::QueuedConnection);
     engine.load(url);

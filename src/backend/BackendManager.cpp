@@ -11,7 +11,7 @@ BackendManager::BackendManager(const QString& file)
 
 BackendManager::~BackendManager()
 {
-    if (not m_imgProviderRequested && m_ptrImgProvider)
+    if (not m_imgProviderRequested && (m_ptrImgProvider != nullptr))
     {
         delete m_ptrImgProvider;
     }

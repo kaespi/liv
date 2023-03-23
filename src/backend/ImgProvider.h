@@ -10,7 +10,7 @@ class ImgProvider : public QQuickImageProvider
     ImgProvider(FileSystemWalker* const ptrFileSystemWalker);
     ~ImgProvider() = default;
 
-    QPixmap requestPixmap(const QString& id, QSize* size, const QSize& requestedSize) override;
+    QPixmap requestPixmap(const QString& imgName, QSize* size, const QSize& /*requestedSize*/) override;
 
   private:
     FileSystemWalker* const m_ptrFileSystemWalker{nullptr};

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+
 add_subdirectory(backend)
 
 qt_add_executable(liv
