@@ -5,10 +5,8 @@ project(lightweightimageviewer VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(RUN_CLANG_TIDY OFF CACHE BOOL "if ON clang-tidy is executed as part of the build process")
 
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
-
-find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
-set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE}")
 
 add_subdirectory(src)

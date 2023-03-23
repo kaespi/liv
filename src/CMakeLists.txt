@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+if(RUN_CLANG_TIDY)
+    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+    set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+endif()
 
 add_subdirectory(backend)
 
