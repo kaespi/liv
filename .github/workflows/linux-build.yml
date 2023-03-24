@@ -43,9 +43,10 @@ jobs:
         run:  |
               cmake -S ..
               cmake --build .
+              mv src/liv .
 
       - name: Linux binary artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ARTIFACT }}
-          path: ${{ env.BUILD_DIR }}/**/${{ env.ARTIFACT }}
+          path: ${{ env.BUILD_DIR }}/${{ env.ARTIFACT }}
