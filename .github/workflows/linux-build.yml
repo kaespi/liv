@@ -15,7 +15,6 @@ defaults:
 env:
   BUILD_DIR:    ${{ github.workspace }}/build
   QT_VERSION:   6.2.*
-  ARTIFACT:     liv
 
 jobs:
   build:
@@ -43,10 +42,15 @@ jobs:
         run:  |
               cmake -S ..
               cmake --build .
-              mv src/liv .
 
-      - name: Linux binary artifact
+      - name: Prepare artifacts
+        working-directory: ${{ env.BUILD_DIR }}
+        run:  |
+              mv src/liv .
+              tar -cvf liv.tar liv
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.ARTIFACT }}
-          path: ${{ env.BUILD_DIR }}/${{ env.ARTIFACT }}
+          name: linux executable
+          path: ${{ env.BUILD_DIR }}/liv.tar
