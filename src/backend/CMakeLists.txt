@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(liv_backend VERSION 0.0.1 LANGUAGES CXX)
 
-add_library(liv_backend_lib SHARED)
+add_library(liv_backend_lib STATIC)
 
 target_sources(liv_backend_lib
     PRIVATE
