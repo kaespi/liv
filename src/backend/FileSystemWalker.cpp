@@ -86,7 +86,7 @@ QString FileSystemWalker::getPrevFile()
     return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
 }
 
-void FileSystemWalker::updateFileIndexToExisting(ssize_t increment)
+void FileSystemWalker::updateFileIndexToExisting(int increment)
 {
     if (m_filesInDir.size() <= 1)
     {

@@ -13,12 +13,12 @@ class FileSystemWalker
     QString getPrevFile();
 
   private:
-    void updateFileIndexToExisting(ssize_t increment);
+    void updateFileIndexToExisting(int increment);
     void rescanFiles();
 
     QDir m_dir{};
     QStringList m_filesInDir{};
-    ssize_t m_currentFileIndex{0};
+    int m_currentFileIndex{0};
 
     QStringList m_filePattern{"*.jpg", "*.JPG", "*.png", "*.PNG"};
 };
