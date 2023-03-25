@@ -40,7 +40,7 @@ jobs:
       - name: Build
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
-              cmake -S ..
+              cmake -DRUN_CLANG_TIDY=ON -S ..
               cmake --build .
 
       - name: Prepare artifacts
