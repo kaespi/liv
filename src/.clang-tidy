@@ -17,7 +17,7 @@ Checks: "*,
         -cppcoreguidelines-pro-type-vararg,
         -misc-non-private-member-variables-in-classes,
 "
-WarningsAsErrors: ''
+WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 FormatStyle:     none
 
