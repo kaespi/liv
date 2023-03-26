@@ -43,11 +43,11 @@ jobs:
         run:  |
               cmake -S ..
               cmake --build .
-              windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\liv.exe --debug --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
+              windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\Debug\liv.exe --debug --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
 
       - name: Prepare artifacts
         working-directory: ${{ github.workspace }}
-        run:  copy ${{ env.BUILD_DIR }}\src\liv.exe ${{ env.DEPLOY_DIR }}
+        run:  copy ${{ env.BUILD_DIR }}\src\Debug\liv.exe ${{ env.DEPLOY_DIR }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
