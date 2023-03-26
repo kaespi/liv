@@ -14,6 +14,7 @@ defaults:
 
 env:
   BUILD_DIR:    ${{ github.workspace }}\build
+  DEPLOY_DIR:    ${{ github.workspace }}\deploy
   QT_VERSION:   6.2.*
 
 jobs:
@@ -42,11 +43,14 @@ jobs:
         run:  |
               cmake -S ..
               cmake --build .
+              windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\liv.exe --debug --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
+
+      - name: Prepare artifacts
+        working-directory: ${{ github.workspace }}
+        run:  copy ${{ env.BUILD_DIR }}\src\liv.exe ${{ env.DEPLOY_DIR }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: windows executable
-          path: |
-              ${{ env.BUILD_DIR }}/**/liv.exe
-              ${{ runner.temp }}/**/*.dll
+          path: ${{ github.workspace }}/deploy/
