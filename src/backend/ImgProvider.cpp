@@ -39,8 +39,9 @@ QPixmap ImgProvider::requestPixmap(const QString& imgName, QSize* size, const QS
     else
     {
         // null pixmap (to signal no image available)
-        QPixmap pixmap{};
-        *size = pixmap.size();
+        QPixmap pixmap{1, 1};
+        *size = QSize(1, 1);
+        pixmap.fill(Qt::black);
         return pixmap;
     }
 }

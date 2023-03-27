@@ -71,19 +71,26 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
 
 QString FileSystemWalker::getCurrentFile() const
 {
-    return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+    if (m_currentFileIndex < m_filesInDir.size())
+    {
+        return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+    }
+    else
+    {
+        return "";
+    }
 }
 
 QString FileSystemWalker::getNextFile()
 {
     updateFileIndexToExisting(+1);
-    return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+    return getCurrentFile();
 }
 
 QString FileSystemWalker::getPrevFile()
 {
     updateFileIndexToExisting(-1);
-    return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+    return getCurrentFile();
 }
 
 void FileSystemWalker::updateFileIndexToExisting(int increment)
