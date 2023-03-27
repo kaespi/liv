@@ -11,6 +11,16 @@ Window {
         anchors.fill: parent
         color: "black"
 
+        Text {
+            id: noImageText
+            text: qsTr("no image")
+            color: "white"
+            visible: false
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
         Image {
             id: img1
             anchors.fill: parent
@@ -35,6 +45,11 @@ Window {
 
             onSourceChanged: {
                 loadingImage = false
+                if (sourceSize.width === 0 && sourceSize.height === 0) {
+                    noImageText.visible = true
+                } else {
+                    noImageText.visible = false
+                }
             }
 
             function waitImageLoaded() {
