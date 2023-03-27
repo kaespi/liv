@@ -13,10 +13,6 @@ int main(int argc, char* argv[])
     {
         imgFile = argv[1]; // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
-    else
-    {
-        imgFile = "../../lightweightimageviewer/data/testimages/bbv1.png";
-    }
 
     BackendManager backendMgr(imgFile);
 
