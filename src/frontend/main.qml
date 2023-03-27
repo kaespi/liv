@@ -43,12 +43,16 @@ Window {
                 imgLoadingTimer.start()
             }
 
-            onSourceChanged: {
-                loadingImage = false
-                if (sourceSize.width === 0 && sourceSize.height === 0) {
-                    noImageText.visible = true
-                } else {
-                    noImageText.visible = false
+            onStatusChanged: {
+                if (status === Image.Ready) {
+                    loadingImage = false
+                    if (sourceSize.width === 1 && sourceSize.height === 1) {
+                        noImageText.visible = true
+                        visible = false
+                    } else {
+                        noImageText.visible = false
+                        visible = true
+                    }
                 }
             }
 
