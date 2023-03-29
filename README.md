@@ -1,5 +1,7 @@
 # liv ("Lightweight image viewer")
 
+![GitHub](https://img.shields.io/github/license/kaespi/liv) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/linux-build.yml?label=linux%20build) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/windows-build.yml?label=windows%20build)
+
 Lightweight image viewer built with [Qt](https://www.qt.io/).
 
 ## Build
