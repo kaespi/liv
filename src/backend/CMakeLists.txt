@@ -21,3 +21,19 @@ target_include_directories(liv_backend_lib
 
 target_link_libraries(liv_backend_lib
     PRIVATE Qt6::Quick)
+
+# **** unittests ****
+add_executable(${PROJECT_NAME}-test)
+
+target_sources(${PROJECT_NAME}-test
+    PRIVATE
+        unittests.cpp
+)
+
+target_link_libraries(${PROJECT_NAME}-test
+    PRIVATE
+        liv_backend_lib
+        GTest::gtest_main
+)
+
+add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test)

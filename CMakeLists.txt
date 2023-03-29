@@ -9,4 +9,6 @@ set(RUN_CLANG_TIDY OFF CACHE BOOL "if ON clang-tidy is executed as part of the b
 
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
+enable_testing()
+
 add_subdirectory(src)
