@@ -10,6 +10,7 @@ target_sources(liv_backend_lib
         ImgProvider.h
         BackendManager.cpp
         BackendManager.h
+        IFileSystemWalker.h
         FileSystemWalker.cpp
         FileSystemWalker.h
 )
@@ -28,11 +29,14 @@ add_executable(${PROJECT_NAME}-test)
 target_sources(${PROJECT_NAME}-test
     PRIVATE
         unittests.cpp
+        ImgProvider-test.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}-test
     PRIVATE
         liv_backend_lib
+        Qt6::Quick
+        GTest::gmock
         GTest::gtest_main
 )
 

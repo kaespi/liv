@@ -1,6 +1,6 @@
 #include "ImgProvider.h"
 
-ImgProvider::ImgProvider(FileSystemWalker* const ptrFileSystemWalker)
+ImgProvider::ImgProvider(IFileSystemWalker* const ptrFileSystemWalker)
     : QQuickImageProvider(QQuickImageProvider::Pixmap), m_ptrFileSystemWalker(ptrFileSystemWalker)
 {}
 

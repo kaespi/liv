@@ -1,16 +1,19 @@
 #pragma once
 
+#include "IFileSystemWalker.h"
+
 #include <QDir>
 #include <QStringList>
 
-class FileSystemWalker
+class FileSystemWalker : public IFileSystemWalker
 {
   public:
     FileSystemWalker(const QString& file, QList<QByteArray>& fileTypes);
+    virtual ~FileSystemWalker() = default;
 
-    QString getCurrentFile() const;
-    QString getNextFile();
-    QString getPrevFile();
+    QString getCurrentFile() const override;
+    QString getNextFile() override;
+    QString getPrevFile() override;
 
   private:
     void updateFileIndexToExisting(int increment);
