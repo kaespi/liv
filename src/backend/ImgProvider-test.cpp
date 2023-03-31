@@ -44,3 +44,28 @@ TEST_F(ImgProviderTest,
     EXPECT_CALL(fileSystemWalker, getPrevFile()).Times(::testing::Exactly(1));
     imgProvider.requestPixmap("sometext42_prev", &size, size);
 }
+
+TEST_F(
+    ImgProviderTest,
+    GIVEN_ImgProvider_WHEN_image_with_underscore_and_some_other_suffix_is_requested_THEN_current_file_is_loaded)
+{
+    MockFileSystemWalker fileSystemWalker;
+    ImgProvider imgProvider(&fileSystemWalker);
+    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(::testing::Exactly(1));
+    imgProvider.requestPixmap("foo_bar", &size, size);
+}
+
+TEST_F(ImgProviderTest,
+       GIVEN_some_request_to_ImgProvider_WHEN_empty_image_is_to_be_loaded_THEN_1x1_pixmap_is_returned)
+{
+    MockFileSystemWalker fileSystemWalker;
+    ImgProvider imgProvider(&fileSystemWalker);
+    EXPECT_CALL(fileSystemWalker, getCurrentFile())
+        .Times(testing::Exactly(1))
+        .WillOnce(testing::Return(QString("")));
+    auto pixmap = imgProvider.requestPixmap("", &size, size);
+    EXPECT_THAT(size.width(), testing::Eq(1));
+    EXPECT_THAT(size.height(), testing::Eq(1));
+    EXPECT_THAT(pixmap.width(), testing::Eq(1));
+    EXPECT_THAT(pixmap.height(), testing::Eq(1));
+}
