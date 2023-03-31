@@ -4,6 +4,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+using ::testing::Eq;
+using ::testing::Exactly;
+using ::testing::Return;
+
 class MockFileSystemWalker : public IFileSystemWalker
 {
   public:
@@ -23,7 +27,7 @@ TEST_F(ImgProviderTest,
 {
     MockFileSystemWalker fileSystemWalker;
     ImgProvider imgProvider(&fileSystemWalker);
-    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(::testing::Exactly(1));
+    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(Exactly(1));
     imgProvider.requestPixmap("", &size, size);
 }
 
@@ -32,7 +36,7 @@ TEST_F(ImgProviderTest,
 {
     MockFileSystemWalker fileSystemWalker;
     ImgProvider imgProvider(&fileSystemWalker);
-    EXPECT_CALL(fileSystemWalker, getNextFile()).Times(::testing::Exactly(1));
+    EXPECT_CALL(fileSystemWalker, getNextFile()).Times(Exactly(1));
     imgProvider.requestPixmap("test_next", &size, size);
 }
 
@@ -41,7 +45,7 @@ TEST_F(ImgProviderTest,
 {
     MockFileSystemWalker fileSystemWalker;
     ImgProvider imgProvider(&fileSystemWalker);
-    EXPECT_CALL(fileSystemWalker, getPrevFile()).Times(::testing::Exactly(1));
+    EXPECT_CALL(fileSystemWalker, getPrevFile()).Times(Exactly(1));
     imgProvider.requestPixmap("sometext42_prev", &size, size);
 }
 
@@ -51,7 +55,7 @@ TEST_F(
 {
     MockFileSystemWalker fileSystemWalker;
     ImgProvider imgProvider(&fileSystemWalker);
-    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(::testing::Exactly(1));
+    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(Exactly(1));
     imgProvider.requestPixmap("foo_bar", &size, size);
 }
 
@@ -60,12 +64,10 @@ TEST_F(ImgProviderTest,
 {
     MockFileSystemWalker fileSystemWalker;
     ImgProvider imgProvider(&fileSystemWalker);
-    EXPECT_CALL(fileSystemWalker, getCurrentFile())
-        .Times(testing::Exactly(1))
-        .WillOnce(testing::Return(QString("")));
+    EXPECT_CALL(fileSystemWalker, getCurrentFile()).Times(Exactly(1)).WillOnce(Return(QString("")));
     auto pixmap = imgProvider.requestPixmap("", &size, size);
-    EXPECT_THAT(size.width(), testing::Eq(1));
-    EXPECT_THAT(size.height(), testing::Eq(1));
-    EXPECT_THAT(pixmap.width(), testing::Eq(1));
-    EXPECT_THAT(pixmap.height(), testing::Eq(1));
+    EXPECT_THAT(size.width(), Eq(1));
+    EXPECT_THAT(size.height(), Eq(1));
+    EXPECT_THAT(pixmap.width(), Eq(1));
+    EXPECT_THAT(pixmap.height(), Eq(1));
 }
