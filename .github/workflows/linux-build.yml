@@ -54,9 +54,9 @@ jobs:
       - name: Unittests Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
-        working-directory: ${{ env.BUILD_DIR }}
         with:
           name: Backend unittests
+          working-directory: ${{ env.BUILD_DIR }}
           path: src/backend/unittests.xml
           reporter: java-junit
 
