@@ -47,7 +47,8 @@ jobs:
 
       - name: Prepare artifacts
         working-directory: ${{ github.workspace }}
-        run:  copy ${{ env.BUILD_DIR }}\src\Release\liv.exe ${{ env.DEPLOY_DIR }}
+        run:  |
+              copy ${{ env.BUILD_DIR }}\src\Release\liv.exe ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\concrt140.dll ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\vccorlib140.dll ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\msvcp140.dll ${{ env.DEPLOY_DIR }}
