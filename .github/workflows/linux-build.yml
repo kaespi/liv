@@ -12,6 +12,11 @@ defaults:
   run:
     shell: bash
 
+permissions:
+  checks: write
+  contents: write
+  statuses: write
+
 env:
   BUILD_DIR:    ${{ github.workspace }}/build
   QT_VERSION:   6.2.*
@@ -46,10 +51,6 @@ jobs:
       - name: Unittests
         working-directory: ${{ env.BUILD_DIR }}
         run: ctest -C Debug --output-on-failure --verbose
-
-      - name: List files
-        working-directory: ${{ env.BUILD_DIR }}
-        run: ls -R
 
       - name: Unittests Report
         uses: dorny/test-reporter@v1
