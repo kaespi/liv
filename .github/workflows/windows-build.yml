@@ -43,11 +43,11 @@ jobs:
         run:  |
               cmake -S ..
               cmake --build . --config Release
-              windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\Debug\liv.exe --debug --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
+              windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\Release\liv.exe --release --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
 
       - name: Prepare artifacts
         working-directory: ${{ github.workspace }}
-        run:  copy ${{ env.BUILD_DIR }}\src\Debug\liv.exe ${{ env.DEPLOY_DIR }}
+        run:  copy ${{ env.BUILD_DIR }}\src\Release\liv.exe ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\concrt140.dll ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\vccorlib140.dll ${{ env.DEPLOY_DIR }}
               copy C:\Windows\System32\msvcp140.dll ${{ env.DEPLOY_DIR }}
