@@ -40,4 +40,4 @@ target_link_libraries(${PROJECT_NAME}-test
         GTest::gtest_main
 )
 
-add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test)
+add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test -platform offscreen)
