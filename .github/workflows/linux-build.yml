@@ -43,6 +43,10 @@ jobs:
               cmake -DRUN_CLANG_TIDY=ON -S ..
               cmake --build .
 
+      - name: Unittests
+        working-directory: ${{ env.BUILD_DIR }}
+        run: ctest -C Debug --output-on-failure --verbose
+
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
