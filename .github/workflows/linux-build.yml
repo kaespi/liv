@@ -47,6 +47,14 @@ jobs:
         working-directory: ${{ env.BUILD_DIR }}
         run: ctest -C Debug --output-on-failure --verbose
 
+      - name: Unittests Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Backend unittests
+          path: ${{ env.BUILD_DIR }}/src/backend/unittests.xml
+          reporter: java-junit
+
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
