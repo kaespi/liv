@@ -61,6 +61,13 @@ jobs:
           path: src/backend/unittests.xml
           reporter: java-junit
 
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            ${{ env.BUILD_DIR }}/src/backend/unittests.xml
+
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
