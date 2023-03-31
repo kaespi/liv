@@ -41,8 +41,8 @@ jobs:
       - name: Build
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
-              cmake -DCMAKE_BUILD_TYPE=Release -S ..
-              cmake --build .
+              cmake -S ..
+              cmake --build . --config Release
               windeployqt.exe --qmldir ${{ github.workspace }}\src\frontend ${{ env.BUILD_DIR }}\src\Debug\liv.exe --debug --compiler-runtime --dir ${{ env.DEPLOY_DIR }}
 
       - name: Prepare artifacts
