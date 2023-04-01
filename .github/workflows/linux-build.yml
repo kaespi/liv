@@ -45,7 +45,7 @@ jobs:
       - name: Build
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
-              cmake -DRUN_CLANG_TIDY=ON -S ..
+              cmake -DRUN_CLANG_TIDY=ON -DUNITTESTS_EXTRA_ARGS="--gtest_output=xml:unittests.xml" -S ..
               cmake --build .
 
       - name: Unittests

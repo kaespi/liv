@@ -40,4 +40,4 @@ target_link_libraries(${PROJECT_NAME}-test
         GTest::gtest_main
 )
 
-add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test -platform offscreen --gtest_output=xml:unittests.xml)
+add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test -platform offscreen "${UNITTESTS_EXTRA_ARGS}")
