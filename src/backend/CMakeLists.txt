@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(liv_backend VERSION 0.0.1 LANGUAGES CXX)
 
 if(UNITTESTS_COVERAGE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -fprofile-abs-path")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
     set(EXTRA_LIBS_COVERAGE "gcov")
 else()
     set(EXTRA_LIBS_COVERAGE "")
