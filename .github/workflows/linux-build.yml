@@ -45,12 +45,14 @@ jobs:
       - name: Build
         working-directory: ${{ env.BUILD_DIR }}
         run:  |
-              cmake -DRUN_CLANG_TIDY=ON -DUNITTESTS_EXTRA_ARGS="--gtest_output=xml:unittests.xml" -S ..
+              cmake -DRUN_CLANG_TIDY=ON -DUNITTESTS_EXTRA_ARGS="--gtest_output=xml:unittests.xml" -DUNITTESTS_COVERAGE=ON -S ..
               cmake --build .
 
       - name: Unittests
         working-directory: ${{ env.BUILD_DIR }}
-        run: ctest -C Debug --output-on-failure --verbose
+        run: |
+             ctest -C Debug --output-on-failure --verbose
+             gcovr -r ${{ github.workspace }} -x coverage.cobertura.xml .
 
       - name: Unittests Report
         uses: dorny/test-reporter@v1
@@ -60,6 +62,18 @@ jobs:
           working-directory: ${{ env.BUILD_DIR }}
           path: src/backend/unittests.xml
           reporter: java-junit
+
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: ${{ env.BUILD_DIR }}/coverage.cobertura.xml
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: false
+          output: both
 
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}
