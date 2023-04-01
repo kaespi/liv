@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 3.16)
 
 project(liv_backend VERSION 0.0.1 LANGUAGES CXX)
 
+if(UNITTESTS_COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -fprofile-abs-path")
+    set(EXTRA_LIBS_COVERAGE "gcov")
+else()
+    set(EXTRA_LIBS_COVERAGE "")
+endif()
+
 add_library(liv_backend_lib STATIC)
 
 target_sources(liv_backend_lib
@@ -21,7 +28,9 @@ target_include_directories(liv_backend_lib
 )
 
 target_link_libraries(liv_backend_lib
-    PRIVATE Qt6::Quick)
+    PRIVATE
+        Qt6::Quick
+        ${EXTRA_LIBS_COVERAGE})
 
 # **** unittests ****
 add_executable(${PROJECT_NAME}-test)
@@ -38,6 +47,7 @@ target_link_libraries(${PROJECT_NAME}-test
         Qt6::Quick
         GTest::gmock
         GTest::gtest_main
+        ${EXTRA_LIBS_COVERAGE}
 )
 
 add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test -platform offscreen "${UNITTESTS_EXTRA_ARGS}")
