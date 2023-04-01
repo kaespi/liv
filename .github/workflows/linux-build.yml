@@ -48,6 +48,9 @@ jobs:
               cmake -DRUN_CLANG_TIDY=ON -DUNITTESTS_EXTRA_ARGS="--gtest_output=xml:unittests.xml" -DUNITTESTS_COVERAGE=ON -S ..
               cmake --build .
 
+      - name: Install gcovr
+        run:  sudo apt-get -y install gcovr
+
       - name: Unittests
         working-directory: ${{ env.BUILD_DIR }}
         run: |
