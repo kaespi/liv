@@ -58,7 +58,9 @@ jobs:
              ctest -C Debug --output-on-failure --verbose
              mkdir -p ${{ env.COVERAGE_DIR }}
              gcovr -r ${{ github.workspace }} -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
-             gcovr -r ${{ github.workspace }} --html-self-contained --html-details liv.coverage.html -e ".*-test\.*" .
+             mkdir ${{ env.COVERAGE_DIR }}/report
+             gcovr -r ${{ github.workspace }} --html-details ${{ env.COVERAGE_DIR }}/report/liv.coverage.html -e ".*-test\.*" .
+             lcov -c -d . -o ${{ env.COVERAGE_DIR }}/coverage.lcov.info
 
 
       - name: Unittests Report
@@ -98,4 +100,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage report
-          path: ${{ env.COVERAGE_DIR }}/*.html
+          path: ${{ env.COVERAGE_DIR }}/report
+
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v1
+        with:
+          path-to-lcov: ${{ env.COVERAGE_DIR }}/coverage.lcov.info
