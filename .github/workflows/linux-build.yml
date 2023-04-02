@@ -57,7 +57,7 @@ jobs:
         run: |
              ctest -C Debug --output-on-failure --verbose
              mkdir -p ${{ env.COVERAGE_DIR }}
-             gcovr -r ${{ github.workspace }} -e ".*-test\.*" -e ".*googletest.* -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
+             gcovr -r ${{ github.workspace }} -e ".*-test\.*" -e ".*googletest.*" -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
              mkdir ${{ env.COVERAGE_DIR }}/report
              gcovr -r ${{ github.workspace }} --html-details ${{ env.COVERAGE_DIR }}/report/liv.coverage.html -e ".*-test\.*" -e ".*googletest.*" .
              lcov -c --exclude "*-test.*" -d . -o ${{ env.COVERAGE_DIR }}/coverage.lcov.info
