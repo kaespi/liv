@@ -50,4 +50,5 @@ target_link_libraries(${PROJECT_NAME}-test
         ${EXTRA_LIBS_COVERAGE}
 )
 
+configure_file("${CMAKE_SOURCE_DIR}/data/testimages/lenna.jpg" "${CMAKE_CURRENT_BINARY_DIR}/lenna.jpg" COPYONLY)
 add_test(${PROJECT_NAME}-gtests ${PROJECT_NAME}-test -platform offscreen "${UNITTESTS_EXTRA_ARGS}")

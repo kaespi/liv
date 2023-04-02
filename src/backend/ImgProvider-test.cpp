@@ -4,6 +4,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#ifdef __linux__
+#include <filesystem>
+#endif
+
 using ::testing::Eq;
 using ::testing::Exactly;
 using ::testing::Return;
@@ -71,3 +75,29 @@ TEST_F(ImgProviderTest,
     EXPECT_THAT(pixmap.width(), Eq(1));
     EXPECT_THAT(pixmap.height(), Eq(1));
 }
+
+#ifdef __linux__
+TEST_F(ImgProviderTest,
+       GIVEN_request_to_current_file_WHEN_lenna_test_image_is_loaded_THEN_40x40_pixmap_is_returned)
+{
+    auto pathToBinary = std::filesystem::canonical("/proc/self/exe").parent_path();
+    auto lennaImgFile = pathToBinary.append("lenna.jpg");
+    if (not std::filesystem::exists(lennaImgFile))
+    {
+        std::cerr << "Lenna test file not found, skipping test "
+                  << ::testing::UnitTest::GetInstance()->current_test_info()->name() << std::endl;
+        return;
+    }
+
+    MockFileSystemWalker fileSystemWalker;
+    ImgProvider imgProvider(&fileSystemWalker);
+    EXPECT_CALL(fileSystemWalker, getCurrentFile())
+        .Times(Exactly(1))
+        .WillOnce(Return(QString(lennaImgFile.c_str())));
+    auto pixmap = imgProvider.requestPixmap("", &size, size);
+    EXPECT_THAT(size.width(), Eq(40));
+    EXPECT_THAT(size.height(), Eq(40));
+    EXPECT_THAT(pixmap.width(), Eq(40));
+    EXPECT_THAT(pixmap.height(), Eq(40));
+}
+#endif // __linux__
