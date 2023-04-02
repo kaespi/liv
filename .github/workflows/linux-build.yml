@@ -105,4 +105,4 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
-          file: ${{ env.COVERAGE_DIR }}/coverage.lcov.info
+          file: ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml
