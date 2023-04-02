@@ -19,7 +19,8 @@ permissions:
 
 env:
   BUILD_DIR:    ${{ github.workspace }}/build
-  COVERAGE_DIR:    ${{ github.workspace }}/coverage
+  COVERAGE_DIR: ${{ github.workspace }}/coverage
+  COVERAGE_EXCLUSION: -e ".*-test\.*" -e ".*googletest.*" -e ".*unittests.*"
   QT_VERSION:   6.2.*
 
 jobs:
@@ -57,8 +58,8 @@ jobs:
         run: |
              ctest -C Debug --output-on-failure --verbose
              mkdir -p ${{ env.COVERAGE_DIR }}/report
-             gcovr -r ${{ github.workspace }} -e ".*-test\.*" -e ".*googletest.*" -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
-             gcovr -r ${{ github.workspace }} --html-details ${{ env.COVERAGE_DIR }}/report/liv.coverage.html -e ".*-test\.*" -e ".*googletest.*" .
+             gcovr -r ${{ github.workspace }} -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml ${{ env.COVERAGE_EXCLUSION }} .
+             gcovr -r ${{ github.workspace }} --html-details ${{ env.COVERAGE_DIR }}/report/liv.coverage.html ${{ env.COVERAGE_EXCLUSION }} .
 
       - name: Unittests report
         uses: dorny/test-reporter@v1
