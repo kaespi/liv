@@ -19,6 +19,7 @@ permissions:
 
 env:
   BUILD_DIR:    ${{ github.workspace }}/build
+  COVERAGE_DIR:    ${{ github.workspace }}/coverage
   QT_VERSION:   6.2.*
 
 jobs:
@@ -55,7 +56,10 @@ jobs:
         working-directory: ${{ env.BUILD_DIR }}
         run: |
              ctest -C Debug --output-on-failure --verbose
-             gcovr -r ${{ github.workspace }} -x coverage.cobertura.xml .
+             mkdir -p ${{ env.COVERAGE_DIR }}
+             gcovr -r ${{ github.workspace }} -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
+             gcovr -r ${{ github.workspace }} --html-self-contained --html-details liv.coverage.html -e ".*-test\.*" .
+
 
       - name: Unittests Report
         uses: dorny/test-reporter@v1
@@ -84,8 +88,14 @@ jobs:
               mv src/liv .
               tar -cvf liv.tar liv
 
-      - name: Upload artifacts
+      - name: Upload executable
         uses: actions/upload-artifact@v3
         with:
           name: linux executable
           path: ${{ env.BUILD_DIR }}/liv.tar
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage report
+          path: ${{ env.COVERAGE_DIR }}/*.html
