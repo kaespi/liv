@@ -60,7 +60,7 @@ jobs:
              gcovr -r ${{ github.workspace }} -x ${{ env.COVERAGE_DIR }}/coverage.cobertura.xml .
              mkdir ${{ env.COVERAGE_DIR }}/report
              gcovr -r ${{ github.workspace }} --html-details ${{ env.COVERAGE_DIR }}/report/liv.coverage.html -e ".*-test\.*" .
-             lcov -c -d . -o ${{ env.COVERAGE_DIR }}/coverage.lcov.info
+             lcov -c --exclude "*-test.*" -d . -o ${{ env.COVERAGE_DIR }}/coverage.lcov.info
 
 
       - name: Unittests Report
@@ -102,7 +102,7 @@ jobs:
           name: coverage report
           path: ${{ env.COVERAGE_DIR }}/report
 
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@v1
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          path-to-lcov: ${{ env.COVERAGE_DIR }}/coverage.lcov.info
+          file: ${{ env.COVERAGE_DIR }}/coverage.lcov.info
