@@ -1,14 +1,14 @@
 #pragma once
 
+#include "IDir.h"
 #include "IFileSystemWalker.h"
 
-#include <QDir>
 #include <QStringList>
 
 class FileSystemWalker : public IFileSystemWalker
 {
   public:
-    FileSystemWalker(const QString& file, QList<QByteArray>& fileTypes);
+    FileSystemWalker(const QString& file, IDir* ptrDir, QList<QByteArray>& fileTypes);
     virtual ~FileSystemWalker() = default;
 
     QString getCurrentFile() const override;
@@ -19,7 +19,7 @@ class FileSystemWalker : public IFileSystemWalker
     void updateFileIndexToExisting(int increment);
     void rescanFiles();
 
-    QDir m_dir{};
+    IDir* m_ptrDir{};
     QStringList m_filesInDir{};
     int m_currentFileIndex{0};
 

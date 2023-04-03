@@ -1,11 +1,14 @@
 #include "BackendManager.h"
 
+#include "DirWrapper.h"
+
 #include <QImageReader>
 
 BackendManager::BackendManager(const QString& file)
 {
     auto supportedFormats = QImageReader::supportedImageFormats();
-    m_ptrFileSystemWalker = std::make_unique<FileSystemWalker>(file, supportedFormats);
+    std::unique_ptr<DirWrapper> ptrDirWrapper = std::make_unique<DirWrapper>();
+    m_ptrFileSystemWalker = std::make_unique<FileSystemWalker>(file, ptrDirWrapper.get(), supportedFormats);
     m_ptrImgProvider = new ImgProvider(m_ptrFileSystemWalker.get());
 }
 

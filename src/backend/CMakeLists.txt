@@ -20,6 +20,9 @@ target_sources(liv_backend_lib
         IFileSystemWalker.h
         FileSystemWalker.cpp
         FileSystemWalker.h
+        IDir.h
+        DirWrapper.cpp
+        DirWrapper.h
 )
 
 target_include_directories(liv_backend_lib

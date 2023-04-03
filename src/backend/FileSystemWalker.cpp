@@ -1,19 +1,20 @@
 #include "FileSystemWalker.h"
 
-#include <QDir>
+#include "IDir.h"
+
 #include <QFile>
 #include <QFileInfo>
 
 namespace
 {
-QString composeFullPath(const QDir& dir, const QString& filename)
+QString composeFullPath(const IDir* ptrDir, const QString& filename)
 {
-    return QDir::cleanPath(dir.absolutePath() + QDir::separator() + filename);
+    return QDir::cleanPath(ptrDir->absolutePath() + QDir::separator() + filename);
 }
 
-void collectFilesInDir(const QDir& dir, QStringList& pattern, QStringList& files)
+void collectFilesInDir(const IDir* ptrDir, QStringList& pattern, QStringList& files)
 {
-    files = dir.entryList(pattern, QDir::Files, QDir::Name | QDir::IgnoreCase);
+    files = ptrDir->entryList(pattern, QDir::Files, QDir::Name | QDir::IgnoreCase);
 }
 
 void updatePattern(const QList<QByteArray>& extensions, QStringList& pattern)
@@ -27,7 +28,8 @@ void updatePattern(const QList<QByteArray>& extensions, QStringList& pattern)
 }
 } // namespace
 
-FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileTypes)
+FileSystemWalker::FileSystemWalker(const QString& file, IDir* ptrDir, QList<QByteArray>& fileTypes)
+    : m_ptrDir(ptrDir)
 {
     updatePattern(fileTypes, m_filePattern);
 
@@ -36,7 +38,7 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
     if (file.isEmpty())
     {
         qWarning("No filename provided");
-        m_dir = QDir(QDir::currentPath());
+        m_ptrDir->setCurrentPath();
     }
     else
     {
@@ -47,21 +49,21 @@ FileSystemWalker::FileSystemWalker(const QString& file, QList<QByteArray>& fileT
             {
                 filename = fileInfo.fileName();
                 auto dir = fileInfo.dir();
-                m_dir = dir;
+                m_ptrDir->setPath(dir.canonicalPath());
             }
             else
             {
-                m_dir = QDir(file);
+                m_ptrDir->setPath(file);
             }
         }
         else
         {
-            m_dir = QDir(QDir::currentPath());
+            m_ptrDir->setCurrentPath();
             qWarning("File %s doesn't exist", file.toLatin1().data());
         }
     }
 
-    collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
+    collectFilesInDir(m_ptrDir, m_filePattern, m_filesInDir);
 
     if (not filename.isEmpty())
     {
@@ -73,7 +75,7 @@ QString FileSystemWalker::getCurrentFile() const
 {
     if (m_currentFileIndex < m_filesInDir.size())
     {
-        return composeFullPath(m_dir, m_filesInDir[m_currentFileIndex]);
+        return composeFullPath(m_ptrDir, m_filesInDir[m_currentFileIndex]);
     }
     else
     {
@@ -116,7 +118,7 @@ void FileSystemWalker::updateFileIndexToExisting(int increment)
             fileIndex = m_filesInDir.size() - 1;
         }
 
-        if (QFile::exists(composeFullPath(m_dir, m_filesInDir[fileIndex])))
+        if (QFile::exists(composeFullPath(m_ptrDir, m_filesInDir[fileIndex])))
         {
             m_currentFileIndex = fileIndex;
             break;
@@ -134,7 +136,7 @@ void FileSystemWalker::updateFileIndexToExisting(int increment)
 void FileSystemWalker::rescanFiles()
 {
     auto currentFile = m_filesInDir[m_currentFileIndex];
-    collectFilesInDir(m_dir, m_filePattern, m_filesInDir);
+    collectFilesInDir(m_ptrDir, m_filePattern, m_filesInDir);
     m_currentFileIndex = m_filesInDir.indexOf(currentFile);
     if (m_currentFileIndex < 0)
     {
