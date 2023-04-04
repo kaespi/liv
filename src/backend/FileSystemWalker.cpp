@@ -28,9 +28,11 @@ void updatePattern(const QList<QByteArray>& extensions, QStringList& pattern)
 }
 } // namespace
 
-FileSystemWalker::FileSystemWalker(const QString& file, IDir* ptrDir, QList<QByteArray>& fileTypes)
-    : m_ptrDir(ptrDir)
+FileSystemWalker::FileSystemWalker(const QString& file, const IFileSystemClassesFactory* ptrFsFactory,
+                                   QList<QByteArray>& fileTypes)
 {
+    m_ptrDir = ptrFsFactory->createDirClass();
+
     updatePattern(fileTypes, m_filePattern);
 
     QString filename{};
@@ -63,7 +65,7 @@ FileSystemWalker::FileSystemWalker(const QString& file, IDir* ptrDir, QList<QByt
         }
     }
 
-    collectFilesInDir(m_ptrDir, m_filePattern, m_filesInDir);
+    collectFilesInDir(m_ptrDir.get(), m_filePattern, m_filesInDir);
 
     if (not filename.isEmpty())
     {
@@ -75,7 +77,7 @@ QString FileSystemWalker::getCurrentFile() const
 {
     if (m_currentFileIndex < m_filesInDir.size())
     {
-        return composeFullPath(m_ptrDir, m_filesInDir[m_currentFileIndex]);
+        return composeFullPath(m_ptrDir.get(), m_filesInDir[m_currentFileIndex]);
     }
     else
     {
@@ -118,7 +120,7 @@ void FileSystemWalker::updateFileIndexToExisting(int increment)
             fileIndex = m_filesInDir.size() - 1;
         }
 
-        if (QFile::exists(composeFullPath(m_ptrDir, m_filesInDir[fileIndex])))
+        if (QFile::exists(composeFullPath(m_ptrDir.get(), m_filesInDir[fileIndex])))
         {
             m_currentFileIndex = fileIndex;
             break;
@@ -136,7 +138,7 @@ void FileSystemWalker::updateFileIndexToExisting(int increment)
 void FileSystemWalker::rescanFiles()
 {
     auto currentFile = m_filesInDir[m_currentFileIndex];
-    collectFilesInDir(m_ptrDir, m_filePattern, m_filesInDir);
+    collectFilesInDir(m_ptrDir.get(), m_filePattern, m_filesInDir);
     m_currentFileIndex = m_filesInDir.indexOf(currentFile);
     if (m_currentFileIndex < 0)
     {

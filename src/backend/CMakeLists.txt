@@ -23,6 +23,9 @@ target_sources(liv_backend_lib
         IDir.h
         DirWrapper.cpp
         DirWrapper.h
+        IFileSystemClassesFactory.h
+        FileSystemWrapperFactory.cpp
+        FileSystemWrapperFactory.h
 )
 
 target_include_directories(liv_backend_lib
