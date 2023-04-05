@@ -45,6 +45,7 @@ target_sources(${PROJECT_NAME}-test
     PRIVATE
         unittests.cpp
         ImgProvider-test.cpp
+        FileSystemWalker-test.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}-test

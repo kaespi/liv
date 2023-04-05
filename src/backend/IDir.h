@@ -6,6 +6,7 @@
 class IDir
 {
   public:
+    virtual ~IDir() = default;
     virtual void setPath(const QString& path) = 0;
     virtual void setCurrentPath() = 0;
     virtual QString absolutePath() const = 0;
