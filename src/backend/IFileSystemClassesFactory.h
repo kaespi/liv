@@ -6,6 +6,7 @@
 
 class IFileSystemClassesFactory
 {
-public:
+  public:
+    virtual ~IFileSystemClassesFactory(){};
     virtual std::unique_ptr<IDir> createDirClass() const = 0;
 };

@@ -6,7 +6,6 @@
 #include <gtest/gtest.h>
 #include <memory>
 
-using ::testing::_;
 using ::testing::Eq;
 using ::testing::NiceMock;
 
@@ -23,10 +22,9 @@ class MockDir : public IDir
 class FileSystemMockFactory : public IFileSystemClassesFactory
 {
   public:
-    FileSystemMockFactory() { m_ptrDir = new NiceMock<MockDir>; };
-    virtual ~FileSystemMockFactory() = default;
+    FileSystemMockFactory() : m_ptrDir(new NiceMock<MockDir>) {}
 
-    virtual std::unique_ptr<IDir> createDirClass() const override
+    [[nodiscard]] std::unique_ptr<IDir> createDirClass() const override
     {
         return std::unique_ptr<MockDir>(m_ptrDir);
     }

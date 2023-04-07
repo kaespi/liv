@@ -24,7 +24,7 @@ class FileSystemWalker : public IFileSystemWalker
 
     std::unique_ptr<IDir> m_ptrDir{};
     QStringList m_filesInDir{};
-    int m_currentFileIndex{0};
+    long long m_currentFileIndex{0};
 
     QStringList m_filePattern{"*.jpg", "*.JPG", "*.png", "*.PNG"};
 };
