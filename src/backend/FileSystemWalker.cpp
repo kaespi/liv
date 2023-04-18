@@ -2,7 +2,6 @@
 
 #include "IDir.h"
 
-#include <QFile>
 #include <QFileInfo>
 
 namespace
@@ -32,6 +31,7 @@ FileSystemWalker::FileSystemWalker(const QString& file, const IFileSystemClasses
                                    QList<QByteArray>& fileTypes)
 {
     m_ptrDir = ptrFsFactory->createDirClass();
+    m_ptrFileSystem = ptrFsFactory->createFileSystemClass();
 
     updatePattern(fileTypes, m_filePattern);
 
@@ -44,7 +44,7 @@ FileSystemWalker::FileSystemWalker(const QString& file, const IFileSystemClasses
     }
     else
     {
-        if (QFile::exists(file))
+        if (m_ptrFileSystem->fileExists(file))
         {
             QFileInfo fileInfo(file);
             if (fileInfo.isFile())
@@ -120,7 +120,7 @@ void FileSystemWalker::updateFileIndexToExisting(int increment)
             fileIndex = m_filesInDir.size() - 1;
         }
 
-        if (QFile::exists(composeFullPath(m_ptrDir.get(), m_filesInDir[fileIndex])))
+        if (m_ptrFileSystem->fileExists(composeFullPath(m_ptrDir.get(), m_filesInDir[fileIndex])))
         {
             m_currentFileIndex = fileIndex;
             break;

@@ -9,4 +9,5 @@ class FileSystemWrapperFactory : public IFileSystemClassesFactory
     virtual ~FileSystemWrapperFactory() = default;
 
     virtual std::unique_ptr<IDir> createDirClass() const override;
+    virtual std::unique_ptr<IFileSystem> createFileSystemClass() const override;
 };

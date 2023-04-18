@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IDir.h"
+#include "IFileSystem.h"
 #include "IFileSystemClassesFactory.h"
 #include "IFileSystemWalker.h"
 
@@ -23,6 +24,7 @@ class FileSystemWalker : public IFileSystemWalker
     void rescanFiles();
 
     std::unique_ptr<IDir> m_ptrDir{};
+    std::unique_ptr<IFileSystem> m_ptrFileSystem{};
     QStringList m_filesInDir{};
     long long m_currentFileIndex{0};
 
