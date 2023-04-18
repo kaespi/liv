@@ -20,7 +20,7 @@ permissions:
 env:
   BUILD_DIR:    ${{ github.workspace }}/build
   COVERAGE_DIR: ${{ github.workspace }}/coverage
-  COVERAGE_EXCLUSION: -e ".*-test\.*" -e ".*googletest.*" -e ".*unittests.*"
+  COVERAGE_EXCLUSION: -e ".*-test\.*" -e ".*googletest.*" -e ".*unittests.*" -e ".*Wrapper.*"
   QT_VERSION:   6.2.*
 
 jobs:
