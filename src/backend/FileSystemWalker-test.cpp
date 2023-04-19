@@ -115,3 +115,27 @@ TEST_F(
     EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/b.jpg"));
     EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/a.jpg"));
 }
+
+TEST_F(
+    FileSystemWalkerTest,
+    GIVEN_browsing_folder_with_multiple_files_and_next_file_is_deleted_WHEN_getting_next_file_THEN_the_one_after_the_deleted_is_returned)
+{
+    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
+        .WillRepeatedly(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_))
+        .WillByDefault([this](const QString& filename) -> bool {
+            if (filename.endsWith("b.jpg"))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        });
+
+    FileSystemWalker fileSystemWalker("a.jpg", &m_fsFactoryMock, m_fileTypes);
+    EXPECT_THAT(fileSystemWalker.getNextFile(), Eq("/c.jpg"));
+    EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/a.jpg"));
+    EXPECT_THAT(fileSystemWalker.getNextFile(), Eq("/c.jpg"));
+}
