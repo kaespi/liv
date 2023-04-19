@@ -91,8 +91,6 @@ TEST_F(
 TEST_F(FileSystemWalkerTest,
        GIVEN_browsing_folder_with_multiple_files_WHEN_getting_next_file_THEN_the_files_are_returned_in_order)
 {
-    const QString existingFile{"a.jpg"};
-
     FileSystemMockFactory fsFactoryMock;
     QList<QByteArray> fileTypes{};
     EXPECT_CALL(*fsFactoryMock.m_ptrDir, entryList(_, _, _))
@@ -105,4 +103,21 @@ TEST_F(FileSystemWalkerTest,
     EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq("/b.jpg"));
     EXPECT_THAT(fileSystemWalker.getNextFile(), Eq("/c.jpg"));
     EXPECT_THAT(fileSystemWalker.getNextFile(), Eq("/a.jpg"));
+}
+
+TEST_F(
+    FileSystemWalkerTest,
+    GIVEN_browsing_folder_with_multiple_files_WHEN_getting_previous_file_THEN_the_files_are_returned_in_order)
+{
+    FileSystemMockFactory fsFactoryMock;
+    QList<QByteArray> fileTypes{};
+    EXPECT_CALL(*fsFactoryMock.m_ptrDir, entryList(_, _, _))
+        .WillRepeatedly(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    EXPECT_CALL(*fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillRepeatedly(Return(true));
+
+    FileSystemWalker fileSystemWalker("a.jpg", &fsFactoryMock, fileTypes);
+    EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq("/a.jpg"));
+    EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/c.jpg"));
+    EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/b.jpg"));
+    EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq("/a.jpg"));
 }
