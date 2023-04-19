@@ -122,16 +122,7 @@ TEST_F(
     ON_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
         .WillByDefault(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
     ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_))
-        .WillByDefault([this](const QString& filename) -> bool {
-            if (filename.endsWith("b.jpg"))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        });
+        .WillByDefault([this](const QString& filename) -> bool { return not filename.endsWith("b.jpg"); });
 
     FileSystemWalker fileSystemWalker("a.jpg", &m_fsFactoryMock, m_fileTypes);
     EXPECT_THAT(fileSystemWalker.getNextFile(), Eq("/c.jpg"));
