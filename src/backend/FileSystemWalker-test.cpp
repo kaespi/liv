@@ -60,7 +60,7 @@ TEST_F(
     GIVEN_FileSystemWalker_is_initialized_with_inexistent_file_WHEN_getting_file_THEN_an_empty_string_is_returned)
 {
     FileSystemWalker fileSystemWalker("inexistent_file.jpg", &m_fsFactoryMock, m_fileTypes);
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillRepeatedly(Return(false));
+    ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillByDefault(Return(false));
     EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq(QString{""}));
     EXPECT_THAT(fileSystemWalker.getNextFile(), Eq(QString{""}));
     EXPECT_THAT(fileSystemWalker.getPrevFile(), Eq(QString{""}));
@@ -74,10 +74,9 @@ TEST_F(
     const QString existingFile{"a.jpg"};
     const QString fullPathExistingFile{someFolder + "/" + existingFile};
 
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
-        .WillRepeatedly(Return(QStringList{existingFile}));
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, absolutePath()).WillRepeatedly(Return(someFolder));
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillRepeatedly(Return(true));
+    ON_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _)).WillByDefault(Return(QStringList{existingFile}));
+    ON_CALL(*m_fsFactoryMock.m_ptrDir, absolutePath()).WillByDefault(Return(someFolder));
+    ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillByDefault(Return(true));
 
     FileSystemWalker fileSystemWalker(existingFile, &m_fsFactoryMock, m_fileTypes);
     EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq(fullPathExistingFile));
@@ -89,9 +88,9 @@ TEST_F(
 TEST_F(FileSystemWalkerTest,
        GIVEN_browsing_folder_with_multiple_files_WHEN_getting_next_file_THEN_the_files_are_returned_in_order)
 {
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
-        .WillRepeatedly(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillRepeatedly(Return(true));
+    ON_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
+        .WillByDefault(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillByDefault(Return(true));
 
     FileSystemWalker fileSystemWalker("a.jpg", &m_fsFactoryMock, m_fileTypes);
     EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq("/a.jpg"));
@@ -105,9 +104,9 @@ TEST_F(
     FileSystemWalkerTest,
     GIVEN_browsing_folder_with_multiple_files_WHEN_getting_previous_file_THEN_the_files_are_returned_in_order)
 {
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
-        .WillRepeatedly(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillRepeatedly(Return(true));
+    ON_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
+        .WillByDefault(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_)).WillByDefault(Return(true));
 
     FileSystemWalker fileSystemWalker("a.jpg", &m_fsFactoryMock, m_fileTypes);
     EXPECT_THAT(fileSystemWalker.getCurrentFile(), Eq("/a.jpg"));
@@ -120,8 +119,8 @@ TEST_F(
     FileSystemWalkerTest,
     GIVEN_browsing_folder_with_multiple_files_and_next_file_is_deleted_WHEN_getting_next_file_THEN_the_one_after_the_deleted_is_returned)
 {
-    EXPECT_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
-        .WillRepeatedly(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    ON_CALL(*m_fsFactoryMock.m_ptrDir, entryList(_, _, _))
+        .WillByDefault(Return(QStringList{"a.jpg", "b.jpg", "c.jpg"}));
     ON_CALL(*m_fsFactoryMock.m_ptrFileSystem, fileExists(_))
         .WillByDefault([this](const QString& filename) -> bool {
             if (filename.endsWith("b.jpg"))
