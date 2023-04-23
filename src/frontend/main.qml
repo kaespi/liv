@@ -43,6 +43,24 @@ Window {
                 imgLoadingTimer.start()
             }
 
+            function adjustImageElementSizeToPicture() {
+                let heightRatio = sourceSize.height / parent.height
+                let widthRatio = sourceSize.width / parent.width
+                if ((heightRatio < 1.0) || (widthRatio < 1.0)) {
+                    if (heightRatio < widthRatio) {
+                        anchors.fill = undefined
+                        anchors.centerIn = parent
+                        height = sourceSize.height
+                    } else {
+                        anchors.fill = undefined
+                        anchors.centerIn = parent
+                        width = sourceSize.width
+                    }
+                } else {
+                    anchors.fill = parent
+                }
+            }
+
             onStatusChanged: {
                 if (status === Image.Ready) {
                     loadingImage = false
@@ -51,6 +69,7 @@ Window {
                         visible = false
                     } else {
                         noImageText.visible = false
+                        adjustImageElementSizeToPicture()
                         visible = true
                     }
                 }
