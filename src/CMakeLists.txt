@@ -16,10 +16,13 @@ if(RUN_CLANG_TIDY)
     set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
 endif()
 
+set(CMAKE_AUTORCC ON)
+
 add_subdirectory(backend)
 
 qt_add_executable(liv
     main.cpp
+    frontend/frontend.qrc
 )
 
 qt_add_qml_module(liv

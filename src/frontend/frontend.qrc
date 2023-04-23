@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>js/ImageDisplayUtils.js</file>
+    </qresource>
+</RCC>
