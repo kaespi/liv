@@ -16,9 +16,8 @@ if(RUN_CLANG_TIDY)
     set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
 endif()
 
-set(CMAKE_AUTORCC ON)
-
 add_subdirectory(backend)
+add_subdirectory(frontend/tests)
 
 qt_add_executable(liv
     main.cpp
