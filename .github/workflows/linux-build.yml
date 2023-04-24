@@ -53,7 +53,7 @@ jobs:
       - name: Install gcovr
         run:  sudo apt-get -y install gcovr
 
-      - name: Unittests (backend)
+      - name: Unittests
         working-directory: ${{ env.BUILD_DIR }}
         run: |
              ctest -C Debug --output-on-failure --verbose
@@ -69,10 +69,6 @@ jobs:
           working-directory: ${{ env.BUILD_DIR }}
           path: src/backend/unittests.xml
           reporter: java-junit
-
-      - name: Unittests (frontend)
-        working-directory: ${{ env.BUILD_DIR }}
-        run: src/frontend/tests/liv_frontend-test -input ${{ github.workspace }} -platform offscreen
 
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}

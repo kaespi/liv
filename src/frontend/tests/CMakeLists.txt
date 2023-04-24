@@ -15,3 +15,5 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Qt6::QuickTest
 )
+
+add_test(liv_frontend-qml_tests ${PROJECT_NAME} -platform offscreen -input ${CMAKE_CURRENT_LIST_DIR})
