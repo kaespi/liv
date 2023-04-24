@@ -72,7 +72,7 @@ jobs:
 
       - name: Unittests (frontend)
         working-directory: ${{ env.BUILD_DIR }}
-        run: src/frontend/tests/liv_frontend-test -input ${{ github.workspace }}
+        run: src/frontend/tests/liv_frontend-test -input ${{ github.workspace }} -platform offscreen
 
       - name: Prepare artifacts
         working-directory: ${{ env.BUILD_DIR }}
