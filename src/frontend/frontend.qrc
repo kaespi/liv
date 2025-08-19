@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>js/ImageDisplayUtils.js</file>
-        <file>tests/tst_frontend.qml</file>
-    </qresource>
-</RCC>
