@@ -6,7 +6,7 @@ Lightweight image viewer built with C#/.NET.
 
 ## Build
 
-To build the application use the Visual Studio solution (liv.sln)[./liv.sln]. It includes the application and unittests.
+To build the application use the Visual Studio solution [liv.sln](./liv.sln). It includes the application and unittests.
 
 ## Usage
 
