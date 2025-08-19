@@ -2,33 +2,18 @@
 
 ![GitHub](https://img.shields.io/github/license/kaespi/liv) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/linux-build.yml?label=linux%20build) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/windows-build.yml?label=windows%20build) ![Coveralls](https://img.shields.io/coverallsCoverage/github/kaespi/liv)
 
-Lightweight image viewer built with [Qt](https://www.qt.io/).
+Lightweight image viewer built with C#/.NET.
 
 ## Build
 
-To build the application, Qt needs to be installed with version >= 6.2. 
-Then build it with CMake (in subfolder `build`): 
-
-```
-cmake -S . -B build
-cmake --build build
-```
-
-In case Qt was installed with the installer, you need to set the `Qt6_DIR` 
-shell variable to the installation path. E.g. when Qt version 6.4.2 was 
-installed to `~/Qt`:
-
-```
-Qt6_DIR=~/Qt/6.4.2/gcc_64/ cmake -S . -B build
-cmake --build build
-```
+To build the application use the Visual Studio solution (liv.sln)[./liv.sln]. It includes the application and unittests.
 
 ## Usage
 
 Run the application by providing a folder with pictures or a picture file directly:
 
 ```
-liv <folder|image file>
+liv.exe <image file>
 ```
 
 With arrow keys you can now step forward and backward through all the (supported)
