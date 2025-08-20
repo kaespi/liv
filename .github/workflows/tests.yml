@@ -31,7 +31,12 @@ jobs:
       id: coverage
       shell: bash
       run: |
-        echo "path=$(find . -type f -name 'coverage.cobertura.xml' | head -n 1)" >> $GITHUB_OUTPUT
+        COVERAGE_FILE=$(find . -type f -name 'coverage.cobertura.xml' | head -n 1)
+        if [ -z "$COVERAGE_FILE" ]; then
+          echo "Coverage file not found!"
+          exit 1
+        fi
+        echo "path=$COVERAGE_FILE" >> $GITHUB_OUTPUT
 
     - name: Install ReportGenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
