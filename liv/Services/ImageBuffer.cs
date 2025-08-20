@@ -110,14 +110,17 @@ public class ImageBuffer : IImageBuffer, IDisposable
     {
         await Task.Run(() =>
         {
-            for (int i = 1; i <= _bufferSize; i++)
+            int count = _imageFiles.Count;
+            if (count < 2) return; // Nothing to buffer if only one image
+            int maxBuffer = Math.Min(_bufferSize, count - 1);
+            for (int i = 1; i <= maxBuffer; i++)
             {
                 // Buffer next images
-                var nextIndex = (_currentIndex + i) % _imageFiles.Count;
+                var nextIndex = (_currentIndex + i) % count;
                 _ = GetImageFromCache(_imageFiles[nextIndex]);
 
                 // Buffer previous images
-                var prevIndex = (_currentIndex - i + _imageFiles.Count) % _imageFiles.Count;
+                var prevIndex = (_currentIndex - i + count) % count;
                 _ = GetImageFromCache(_imageFiles[prevIndex]);
             }
         });
@@ -125,7 +128,7 @@ public class ImageBuffer : IImageBuffer, IDisposable
 
     public void Dispose()
     {
-        foreach (var image in _imageCache.Values)
+        foreach (var image in _imageCache.Values.ToList())
         {
             image?.Dispose();
         }
