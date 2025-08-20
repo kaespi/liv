@@ -1,6 +1,6 @@
 # liv ("Lightweight image viewer")
 
-![GitHub](https://img.shields.io/github/license/kaespi/liv) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/windows-build.yml?label=windows%20build) ![Coveralls](https://img.shields.io/coverallsCoverage/github/kaespi/liv)
+![GitHub](https://img.shields.io/github/license/kaespi/liv) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/kaespi/liv/build.yml?label=build) ![Coveralls](https://img.shields.io/coverallsCoverage/github/kaespi/liv)
 
 Lightweight image viewer built with C#/.NET.
 
