@@ -24,38 +24,13 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
-    - name: Test with coverage
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
-
-    - name: Find coverage file
-      id: coverage
-      shell: bash
-      run: |
-        COVERAGE_FILE=$(find . -type f -name 'coverage.cobertura.xml' | head -n 1)
-        if [ -z "$COVERAGE_FILE" ]; then
-          echo "Coverage file not found!"
-          exit 1
-        fi
-        echo "path=$COVERAGE_FILE" >> $GITHUB_OUTPUT
-
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-    - name: Generate coverage report
-      run: reportgenerator -reports:${{ steps.coverage.outputs.path }} -targetdir:CoverageReport -reporttypes:Html
-
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results
         path: TestResults/
-        retention-days: 7
-
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: coverage-report
-        path: CoverageReport/
         retention-days: 7
