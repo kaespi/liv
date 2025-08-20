@@ -26,12 +26,18 @@ jobs:
       
     - name: Test with coverage
       run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
-      
+
+    - name: Find coverage file
+      id: coverage
+      shell: bash
+      run: |
+        echo "path=$(find . -type f -name 'coverage.cobertura.xml' | head -n 1)" >> $GITHUB_OUTPUT
+
     - name: Install ReportGenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Generate coverage report
-      run: reportgenerator -reports:**/TestResults/*/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:Html
+      run: reportgenerator -reports:${{ steps.coverage.outputs.path }} -targetdir:CoverageReport -reporttypes:Html
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
