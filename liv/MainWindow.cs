@@ -10,6 +10,7 @@ public partial class MainWindow : Form
     private FormBorderStyle _previousBorderStyle;
     private Rectangle _previousBounds;
     private PictureBox? pictureBox = null;
+    private bool _shouldCloseImmediately = false;
 
     public MainWindow()
     {
@@ -34,7 +35,7 @@ public partial class MainWindow : Form
                 if (!_imageBuffer.InitializeFromDirectory(args[1]))
                 {
                     MessageBox.Show("No supported images found in the directory.", "No Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Application.Exit();
+                    _shouldCloseImmediately = true;
                 }
             }
             else if (File.Exists(args[1]))
@@ -44,7 +45,7 @@ public partial class MainWindow : Form
             else
             {
                 MessageBox.Show("The specified file or directory does not exist.", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                _shouldCloseImmediately = true;
             }
         }
         else
@@ -61,8 +62,17 @@ public partial class MainWindow : Form
             }
             else
             {
-                Application.Exit();
+                _shouldCloseImmediately = true;
             }
+        }
+    }
+
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+        if (_shouldCloseImmediately)
+        {
+            Close();
         }
     }
 
