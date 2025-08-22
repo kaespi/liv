@@ -120,7 +120,9 @@ public class ImageBuffer : IImageBuffer, IDisposable
         {
             try
             {
-                _imageCache[filePath] = Image.FromFile(filePath);
+                var img = Image.FromFile(filePath);
+                ApplyExifOrientation(img);
+                _imageCache[filePath] = img;
             }
             catch
             {
@@ -128,6 +130,61 @@ public class ImageBuffer : IImageBuffer, IDisposable
             }
         }
         return _imageCache[filePath];
+    }
+
+    /// <summary>
+    /// EXIF orientation values as per specification:
+    /// https://exiftool.org/TagNames/EXIF.html#Orientation
+    /// </summary>
+    private enum ExifOrientation
+    {
+        Normal = 1,
+        FlipHorizontal = 2,
+        Rotate180 = 3,
+        FlipVertical = 4,
+        Transpose = 5,
+        Rotate90 = 6,
+        Transverse = 7,
+        Rotate270 = 8
+    }
+
+    private static void ApplyExifOrientation(Image img)
+    {
+        const int ExifOrientationId = 0x0112;
+        if (img.PropertyIdList.Contains(ExifOrientationId))
+        {
+            var prop = img.GetPropertyItem(ExifOrientationId);
+            if (prop?.Value != null && prop.Value.Length > 0)
+            {
+                int orientation = prop.Value[0];
+                switch ((ExifOrientation)orientation)
+                {
+                    case ExifOrientation.FlipHorizontal:
+                        img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                        break;
+                    case ExifOrientation.Rotate180:
+                        img.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                        break;
+                    case ExifOrientation.FlipVertical:
+                        img.RotateFlip(RotateFlipType.Rotate180FlipX);
+                        break;
+                    case ExifOrientation.Transpose:
+                        img.RotateFlip(RotateFlipType.Rotate90FlipX);
+                        break;
+                    case ExifOrientation.Rotate90:
+                        img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                        break;
+                    case ExifOrientation.Transverse:
+                        img.RotateFlip(RotateFlipType.Rotate270FlipX);
+                        break;
+                    case ExifOrientation.Rotate270:
+                        img.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     private async Task BufferImagesAsync()
