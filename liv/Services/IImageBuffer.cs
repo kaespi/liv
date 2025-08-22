@@ -12,6 +12,13 @@ public interface IImageBuffer
     /// </summary>
     /// <param name="filePath">Path to the image file to start with</param>
     void Initialize(string filePath);
+
+    /// <summary>
+    /// Initializes the buffer with the first image from the given directory
+    /// </summary>
+    /// <param name="directoryPath">Path to the directory containing images</param>
+    /// <returns>True if initialization was successful, false if no valid images were found</returns>
+    bool InitializeFromDirectory(string directoryPath);
     
     /// <summary>
     /// Moves to the next image in the directory

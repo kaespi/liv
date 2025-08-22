@@ -26,9 +26,43 @@ public partial class MainWindow : Form
         this.Resize += OnResize;
 
         string[] args = Environment.GetCommandLineArgs();
-        if (args.Length > 1 && File.Exists(args[1]))
+        if (args.Length > 1)
         {
-            _imageBuffer.Initialize(args[1]);
+            // Check if input is directory or file
+            if (Directory.Exists(args[1]))
+            {
+                if (!_imageBuffer.InitializeFromDirectory(args[1]))
+                {
+                    MessageBox.Show("No supported images found in the directory.", "No Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Application.Exit();
+                }
+            }
+            else if (File.Exists(args[1]))
+            {
+                _imageBuffer.Initialize(args[1]);
+            }
+            else
+            {
+                MessageBox.Show("The specified file or directory does not exist.", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+        else
+        {
+            var filter = $"Image Files|{string.Join(";", ImageBuffer.SupportedExtensions.Select(ext => "*" + ext))}";
+            using var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter,
+                Title = "Select an image file"
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _imageBuffer.Initialize(openFileDialog.FileName);
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
     }
 

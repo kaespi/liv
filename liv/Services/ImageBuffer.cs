@@ -2,11 +2,11 @@ namespace liv.Services;
 
 public class ImageBuffer : IImageBuffer, IDisposable
 {
+    public static readonly string[] SupportedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
     private readonly int _bufferSize;
     private readonly List<string> _imageFiles = new();
     private readonly Dictionary<string, Image?> _imageCache = new();
     private int _currentIndex = -1;
-    private readonly string[] _supportedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
 
     public Image? CurrentImage => _currentIndex >= 0 ? GetImageFromCache(_imageFiles[_currentIndex]) : null;
     public string? CurrentFilePath => _currentIndex >= 0 ? _imageFiles[_currentIndex] : null;
@@ -30,7 +30,7 @@ public class ImageBuffer : IImageBuffer, IDisposable
         // Get all image files in the directory
         _imageFiles.Clear();
         _imageFiles.AddRange(Directory.GetFiles(directory)
-            .Where(file => _supportedExtensions.Contains(Path.GetExtension(file).ToLowerInvariant()))
+            .Where(file => SupportedExtensions.Contains(Path.GetExtension(file).ToLowerInvariant()))
             .OrderBy(f => f));
 
         // Find the index of the current file
@@ -41,6 +41,30 @@ public class ImageBuffer : IImageBuffer, IDisposable
         // Load the current image and buffer
         LoadCurrentImage();
         _ = BufferImagesAsync();
+    }
+
+    public bool InitializeFromDirectory(string directoryPath)
+    {
+        if (string.IsNullOrEmpty(directoryPath))
+            throw new ArgumentException("Directory path cannot be empty", nameof(directoryPath));
+
+        if (!Directory.Exists(directoryPath))
+            throw new DirectoryNotFoundException($"Directory not found: {directoryPath}");
+
+        // Get all image files in the directory
+        _imageFiles.Clear();
+        _imageFiles.AddRange(Directory.GetFiles(directoryPath)
+            .Where(file => SupportedExtensions.Contains(Path.GetExtension(file).ToLowerInvariant()))
+            .OrderBy(f => f));
+
+        if (_imageFiles.Count == 0)
+            return false;
+
+        // Set to first image
+        _currentIndex = 0;
+        LoadCurrentImage();
+        _ = BufferImagesAsync();
+        return true;
     }
 
     public async Task<Image?> MoveNextAsync()
