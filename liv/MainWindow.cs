@@ -22,6 +22,7 @@ public partial class MainWindow : Form
         this.BackColor = Color.Black;
         this.WindowState = FormWindowState.Maximized;
         this.KeyPreview = true;
+        this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         
         this.KeyDown += OnKeyDown;
         this.Resize += OnResize;
