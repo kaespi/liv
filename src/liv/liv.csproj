@@ -10,6 +10,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>liv.ico</ApplicationIcon>
   </PropertyGroup>
+	
+  <ItemGroup>
+    <Content Include="liv.ico">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>
