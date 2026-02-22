@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/liv.Core/liv.Core.csproj" />
+    <Project Path="src/liv/liv.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/liv.Core.Tests/liv.Core.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,12 +1,37 @@
-# This file is used to ignore files which are generated
-# ----------------------------------------------------------------------------
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+publish/
 
-# Binaries
-# --------
-*.dll
-*.exe
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+launchSettings.json
 
-**/obj
-**/bin
-*.csproj.user
-.vs
+## NuGet
+**/[Pp]ackages/*
+*.nupkg
+*.snupkg
+**/project.lock.json
+**/project.fragment.lock.json
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResult.xml
