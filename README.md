@@ -1,5 +1,7 @@
 # liv — Lightweight Image Viewer
 
+![GitHub](https://img.shields.io/github/license/kaespi/liv)
+
 A blazing-fast, lightweight image viewer for Windows built with WPF on .NET.
 
 ## Features
